@@ -6,7 +6,11 @@
 
 <span>1. Підготуйте невеликий словник термінів (до 10 визначень) пов'язаних з поняттям SaaS. Візуалізуйте їх у вигляді інтелект-карти.</span>
 
-<img width="2761" height="1387" alt="saas_mindmap_drawio" src="https://github.com/user-attachments/assets/15433489-e793-45e4-bfec-b63d0743ae6d" />
+<img width="2048" height="1049" alt="saas_mindmap_drawio" src="https://github.com/user-attachments/assets/84396d75-58f1-434f-a98b-8b18b4662adb" />
+
+<br>
+
+<br>
 
 <span>2. Дайте відповіді на наступні питання:</span>  
 
