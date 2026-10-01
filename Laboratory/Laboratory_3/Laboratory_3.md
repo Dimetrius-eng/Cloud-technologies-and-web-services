@@ -155,9 +155,9 @@
 
 ---
 
-**<span>2. Зареєструвати акаунт AWS Free Tier (показати основні кроки налаштувань, персональні дані можна заблюрити)</span>**
+**<span>2. Зареєструвати акаунт AWS Free Tier (показати основні кроки налаштувань, персональні дані можна заблюрити).</span>**
 
-Перейшовши за посиланням https://aws.amazon.com/free/ та натиснувши **«Create an AWS Account»**, я ввів свій Email, номер телефону, адресу проживання та поштовий індекс. Після цього вказав дані банківської картки, підтвердив номер телефону, ввівши код з СМС тим самим активувши безкоштовний план підтримки:  
+Перейшовши за посиланням https://aws.amazon.com/free/ та натиснувши **Create an AWS Account**, я ввів свій Email, номер телефону, адресу проживання та поштовий індекс. Після цього вказав дані банківської картки, підтвердив номер телефону, ввівши код з СМС тим самим активувши безкоштовний план підтримки:  
 
 <img width="1736" height="435" alt="image" src="https://github.com/user-attachments/assets/86b7561f-917c-4082-a396-ce14119aa342" />
 
@@ -171,7 +171,7 @@
 
 <img width="1079" height="227" alt="image" src="https://github.com/user-attachments/assets/35056edd-14a0-48ec-b55f-869bf2312c3c" />  
 
-У розділі **Multi-factor authentication (MFA) devices** я натиснув **Register device**, вказав тип автентифікації як **Authenticator app**, просканував QR code з додатку Google Authenticator та ввів код. Після цього додав резерву електронну пошту та дав назву
+У розділі **Multi-factor authentication (MFA) devices** я натиснув **Register device**, вказав тип автентифікації як **Authenticator app**, просканував QR code з додатку Google Authenticator та ввів код. Після цього додав резервну електронну пошту та дав назву
 відновлювального пристрою як **My Phone**:  
 
 <img width="1280" height="331" alt="IMG_20261001_112117" src="https://github.com/user-attachments/assets/26963ba6-e2e0-4129-98a4-7d4e37d92fad" />
@@ -182,7 +182,7 @@
 
 **<span>4. Створіть свій перший бюджет «Zero Spend Budget».</span>**  
 
-У полі пошуку AWS Console я ввів **Budgets** та перейшов до сервісу **AWS Budgets**, після чого натиснув кнопку **Create budget**, оберіть шаблон **Zero spend budget** та вкажіть свій email для отримання сповіщень. Натиснув **Create budget**:
+У полі пошуку AWS Console я ввів **Budgets** та перейшов до сервісу **AWS Budgets**, після чого натиснув кнопку **Create budget**, обрав шаблон **Zero spend budget** та вказав свій email для отримання сповіщень. Натиснув **Create budget**:
 
 <img width="1886" height="462" alt="image" src="https://github.com/user-attachments/assets/52e0faf3-7ba9-469f-b245-913bc3b0309e" />
 
@@ -195,11 +195,11 @@
 *   група: `developers`
 *   користувачі: Ваше ім'я та двох Ваших одногрупників  
 
-Під час виконання роботи у новоствореному акаунті AWS Free Tier виявлено тимчасове системне обмеження AWS (Account Verification Hold / Feature unavailable), яке блокує створення IAM User Groups та сервіс IAM Identity Center. Для виконання вимог лабораторної роботи щодо розмежування прав доступів було використано пряме призначення політик безпеки (Attach policies directly). Для імітації групи `developers` користувачам призначено політику `PowerUserAccess`:
+Під час виконання роботи у новоствореному акаунті AWS Free Tier я виявив тимчасове системне обмеження AWS (Account Verification Hold / Feature unavailable), яке блокує створення IAM User Groups та сервіс IAM Identity Center. Для виконання вимог лабораторної роботи щодо розмежування прав доступів я використав пряме призначення політик безпеки (Attach policies directly). Для імітації групи `developers` користувачам призначив політику `PowerUserAccess`:
 
 <img width="1766" height="682" alt="image" src="https://github.com/user-attachments/assets/2c43e396-b584-40f9-9d81-df9bda153c0c" />
 
-Я перейшов у розділ **Users** та за допомогою кнопки "**Add user**" додав трьох користувачів (`Dima`, `Dima Zozulia` та `Volodya Kirichok`) з відповідними правами доступу:
+Я перейшов у розділ **Users** та за допомогою кнопки **Add user** додав трьох користувачів (`Dima`, `Dima Zozulia` та `Volodya Kirichok`) з відповідними правами доступу:
 
 <img width="1881" height="286" alt="image" src="https://github.com/user-attachments/assets/9e38257e-5d68-475e-925a-05e1c77121b9" />
 
@@ -224,7 +224,7 @@
 
 **<span>7. Встановіть на свій ПК AWS CLI.</span>**
 
-Я завантажте та запустив офіційний інсталятор [AWS CLI MSI Installer](https://awscli.amazonaws.com/AWSCLIV2.msi), після чого перевірив версію AWS CLI за допомогою команди в терміналі:
+Я завантажив та запустив офіційний інсталятор [AWS CLI MSI Installer](https://awscli.amazonaws.com/AWSCLIV2.msi), після чого перевірив версію AWS CLI за допомогою команди в терміналі:
 
 ```bash
 aws --version
@@ -238,7 +238,7 @@ aws --version
 
 **<span>8. Сконфігуруйте AWS CLI з доступом через свої Access Key ID та Secret Access Key. Яка команда для цього потрібна?</span>**
 
-В IAM Console створіть Access Key для мого користувача я обрав Create access key та створив ключі доступу. У терміналі ПК виконав команду:
+В IAM Console я обрав **Create access key** та створив ключі доступу для мого користувача. У терміналі ПК виконав команду:
 
 ```bash
 aws configure
