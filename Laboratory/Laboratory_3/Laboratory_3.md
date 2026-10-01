@@ -152,128 +152,112 @@
 
 <br>
 
-<span>2. Зареєструйте акаунт AWS Free Tier (пройдіть основні кроки: реєстрація email, вибір персонального акаунту, введення адреси та платіжної картки для верифікації особи).</span>
+<span>2. Зареєструвати акаунт AWS Free Tier (показати основні кроки налаштувань, персональні дані можна заблюрити)</span>
 
-> **Інструкція для виконання завдання:**
-> 1. Перейдіть за посиланням https://aws.amazon.com/free/ та натисніть **«Create an AWS Account»**.
-> 2. Введіть ваш Email, назву акаунта (`AWS Account Name`) та підтвердіть код із пошти.
-> 3. Вкажіть тип акаунта **Personal**, заповніть контактні дані.
-> 4. Вкажіть дані банківської картки (для перевірки тимчасово заблокується еквівалент \$1).
-> 5. Пройдіть перевірку через SMS та оберіть план підтримки **Basic Support - Free**.
->
-> *(Зробіть скріншот підтвердження успішної реєстрації або головної сторінки AWS Management Console та вставте нижче, заблюривши особисті дані).*
->
-> `[Вставити скріншот реєстрації акаунту AWS]`
+Перейшовши за посиланням https://aws.amazon.com/free/ та натиснувши **«Create an AWS Account»**, я ввів свій Email, номер телефону, адресу проживання та поштовий індекс. Після цього вказав дані банківської картки, підтвердив номер телефону, ввівши код з СМС тим самим активувши безкоштовний план підтримки:  
 
-<br>
+<img width="1736" height="435" alt="image" src="https://github.com/user-attachments/assets/86b7561f-917c-4082-a396-ce14119aa342" />
 
-<span>3. Налаштуйте двофакторну автентифікацію (MFA) для свого Root-акаунту.</span>
+<br>  
 
-> **Інструкція для виконання завдання:**
-> 1. У правому верхньому кутку консолі натисніть на назву акаунта ➔ оберіть **Security Credentials**.
-> 2. У розділі **Multi-factor authentication (MFA)** натисніть **Assign MFA**.
-> 3. Вкажіть назву пристрою (наприклад, `MyPhone`), оберіть **Authenticator app**.
-> 4. Відскануйте QR-код через додаток (Google Authenticator / Authy) та введіть два послідовні коди TOTP.
->
-> *(Зробіть скріншот зі сторінки Security Credentials, де видно зелений статус «MFA assigned» та вставте нижче).*
->
-> `[Вставити скріншот налаштованої MFA]`
+<br>  
 
-<br>
+<span>3. Налаштуйте MFA для свого акаунту. Продемонструвати основні кроки.</span>
 
-<span>4. Створіть свій перший бюджет «Zero Spend Budget» для контролю витрат.</span>
+У лівому нижньому кутку консолі потрібно натиснути на назву акаунта та обрати **Manage security and sign-in**:
 
-> **Інструкція для виконання завдання:**
-> 1. У полі пошуку AWS Console введіть **Budgets** та перейдіть до сервісу **AWS Budgets**.
-> 2. Натисніть кнопку **Create budget**.
-> 3. Оберіть шаблон **Zero spend budget** (або *Customize budget ➔ Cost budget* зі значенням `$0.01`).
-> 4. Вкажіть назву бюджету `My Zero Spend Budget` та вкажіть ваш email для отримання сповіщень.
-> 5. Натисніть **Create budget**.
->
-> *(Зробіть скріншот створеного бюджету зі списку у розділі AWS Budgets та вставте нижче).*
->
-> `[Вставити скріншот створеного Zero Spend Budget]`
+<img width="1079" height="227" alt="image" src="https://github.com/user-attachments/assets/35056edd-14a0-48ec-b55f-869bf2312c3c" />  
+
+У розділі **Multi-factor authentication (MFA) devices** я натиснув **Register device**, вказав тип автентифікації як **Authenticator app**, просканував QR code з додатку Google Authenticator та ввів код. Після цього додав резерву електронну пошту та дав назву
+відновлювального пристрою як **My Phone**:  
+
+<img width="1280" height="331" alt="IMG_20261001_112117" src="https://github.com/user-attachments/assets/26963ba6-e2e0-4129-98a4-7d4e37d92fad" />
+
+<br>  
+
+<br>  
+
+<span>4. Створіть свій перший бюджет «Zero Spend Budget».</span>  
+
+У полі пошуку AWS Console я ввів **Budgets** та перейшов до сервісу **AWS Budgets**, після чого натиснув кнопку **Create budget**, оберіть шаблон **Zero spend budget** та вкажіть свій email для отримання сповіщень. Натиснув **Create budget**:
+
+<img width="1886" height="462" alt="image" src="https://github.com/user-attachments/assets/52e0faf3-7ba9-469f-b245-913bc3b0309e" />
 
 <br>
 
-<span>5. Створіть через стандартний AWS IAM нову групу та нових користувачів:</span>
-*   Група: `developers`
-*   Користувачі: Ваше ім'я та імена двох одногрупників.
+<br>
 
-> **Інструкція для виконання завдання:**
-> 1. У пошуку консолі перейдіть у сервіс **IAM**.
-> 2. Перейдіть у розділ **User groups** ➔ натисніть **Create group** ➔ введіть назву `developers`.
-> 3. Перейдіть у розділ **Users** ➔ натисніть **Add users**.
-> 4. Додайте трьох користувачів (наприклад: `vladyslav`, `alex`, `dmytro`).
-> 5. Додайте їх до створеної групи `developers`.
->
-> *(Зробіть скріншот списку користувачів та списку груп у консолі IAM та вставте нижче).*
->
-> `[Вставити скріншот групи developers та створених користувачів в IAM]`
+<span>5. Створіть IAM policy нову групу та нових користувачів:</span>
+*   група: `developers`
+*   користувачі: Ваше ім'я та двох Ваших одногрупників.  
+
+Під час виконання роботи у новоствореному акаунті AWS Free Tier виявлено тимчасове системне обмеження AWS (Account Verification Hold / Feature unavailable), яке блокує створення IAM User Groups та сервіс IAM Identity Center. Для виконання вимог лабораторної роботи щодо розмежування прав доступів було використано пряме призначення політик безпеки (Attach policies directly). Для імітації групи `developers` користувачам призначено політику `PowerUserAccess`:
+
+<img width="1766" height="682" alt="image" src="https://github.com/user-attachments/assets/2c43e396-b584-40f9-9d81-df9bda153c0c" />
+
+Я перейшов у розділ **Users** та за допомогою кнопки "**Add user**" додав трьох користувачів (`Dima`, `Dima Zozulia` та `Volodya Kirichok`) з відповідними правами доступу:
+
+<img width="1881" height="286" alt="image" src="https://github.com/user-attachments/assets/9e38257e-5d68-475e-925a-05e1c77121b9" />
 
 <br>
 
-<span>6. Створіть через AWS IAM Identity Center нову групу та користувачів:</span>
-*   Створіть групу `developers` та додайте користувачів через IAM Identity Center.
-*   Створіть нову групу `readonly`.
-*   Додайте одного з користувачів групи `developers` додатково у групу `readonly`.
-*   Перегляньте та продемонструйте, у яких групах перебуває цей користувач.
+<br>
 
-> **Інструкція для виконання завдання:**
-> 1. У пошуку консолі перейдіть у **AWS IAM Identity Center** (активуйте сервіс, якщо потрібно).
-> 2. У меню ліворуч оберіть **Groups** ➔ створіть групи `developers` та `readonly`.
-> 3. У меню **Users** додайте користувачів та розподіліть їх по групах.
-> 4. Відкрийте картку обраного користувача та перейдіть на вкладку **Groups**, щоб показати його участь у двох групах одночасно.
->
-> *(Зробіть скріншот детальної сторінки користувача з переліком його груп та вставте нижче).*
->
-> `[Вставити скріншот з IAM Identity Center із зображенням груп користувача]`
+<span>6. Створіть через AWS IAM Identity Center:</span>
+*   нову групу та користувачів (повторіть завдання п.5, але вже AWS IAM Identity Center)
+*   нову групу група readonly 
+*   додайте до неї одного з користувачів, що перебуває в групі  developers  
+*   перегляньте для цього користувача в яких групах він перебуває.
+
+Для імітації двох груп одному з користувачів було комбіновано призначено політики `PowerUserAccess` та `ReadOnlyAccess`:
+
+<img width="1746" height="609" alt="image" src="https://github.com/user-attachments/assets/59d0e5bd-892f-4ac0-9fd2-5b4cd0c10a74" />
 
 <br>
 
-<span>7. Встановіть на свій ПК інструмент командного рядка AWS CLI.</span>
+<br>
 
-> **Інструкція для виконання завдання:**
-> * **Для Windows:** Завантажте та запустіть офіційний інсталятор [AWS CLI MSI Installer](https://awscli.amazonaws.com/AWSCLIV2.msi).
-> * **Для macOS:** Запустіть у терміналі `pkg` інсталятор або виконай команду `brew install awscli`.
-> * **Перевірка:** Відкрийте термінал / CMD та виконайте команду `aws --version`.
->
-> *(Зробіть скріншот вікна командного рядка з виведеною версією AWS CLI та вставте нижче).*
->
-> `[Вставити скріншот терміналу з результатом виконання aws --version]`
+<span>7. Встановіть на свій ПК AWS CLI.</span>
+
+Я завантажте та запустив офіційний інсталятор [AWS CLI MSI Installer](https://awscli.amazonaws.com/AWSCLIV2.msi), після чого перевірив версію AWS CLI за допомогою команди в терміналі:
+```bash
+aws --version
+```
+
+<img width="466" height="46" alt="image" src="https://github.com/user-attachments/assets/526f783d-6a33-462a-b69a-71cbb338bb60" />
 
 <br>
 
-<span>8. Сконфігуруйте AWS CLI за допомогою командного рядка, ввівши свої Access Key ID та Secret Access Key.</span>
+<br>
 
-> **Інструкція для виконання завдання:**
-> 1. В IAM Console створіть Access Key для вашого користувача (IAM ➔ Users ➔ Security credentials ➔ Create access key).
-> 2. У терміналі вашого ПК виконайте команду:
->    ```bash
->    aws configure
->    ```
-> 3. Послідовно введіть ваші дані:
->    * **AWS Access Key ID:** `[Ваш Access Key]`
->    * **AWS Secret Access Key:** `[Ваш Secret Access Key]`
->    * **Default region name:** `eu-central-1` (або ваш регіон)
->    * **Default output format:** `json`
->
-> *(Зробіть скріншот терміналу з процесом конфігурації `aws configure` та вставте нижче).*
->
-> `[Вставити скріншот виконання команди aws configure]`
+<span>8. Сконфігуруйте AWS CLI з доступом через свої Access Key ID та Secret Access Key. Яка команда для цього потрібна?</span>
+
+В IAM Console створіть Access Key для мого користувача я обрав Create access key та створив ключі доступу. У терміналі ПК виконав команду:
+```bash
+aws configure
+```
+Послідовно ввів свої дані:
+
+<img width="1103" height="190" alt="image" src="https://github.com/user-attachments/assets/5ad60a10-3206-4516-8ead-27d6174b48fd" />
 
 <br>
 
-<span>9. Перевірте за допомогою AWS CLI, чи є у вашому акаунті запущені віртуальні машини.</span>
+<br>
 
-> **Інструкція для виконання завдання:**
-> Виконайте у терміналі команду для отримання списку екземплярів EC2:
-> ```bash
-> aws ec2 describe-instances
-> ```
-> *(Зробіть скріншот порожнього масиву `"Reservations": []` у відповідь від API та вставте нижче).*
->
-> `[Вставити скріншот виконання команди aws ec2 describe-instances]`
+<span>9. Перегляньте чи є у Вас запущені якісь віртуальні машини? Яка команда для цього потрібна?</span>
+
+При виконанні команди `aws ec2 describe-instances` отримано помилку `UnauthorizedOperation (explicit deny in a service control policy)`. Операцію заблоковано через політику безпеки вищого рівня **Service Control Policy (SCP)** в AWS Organizations:
+
+<img width="1097" height="130" alt="image" src="https://github.com/user-attachments/assets/2a8c5c59-008a-44fc-96bf-a93143a7b31d" />
+
+Це наочно демонструє ієрархію прав в AWS: правила SCP мають пріоритет над локальними політиками IAM користувача. Працездатність та коректність конфігурації AWS CLI підтверджено успішним виконанням команди ідентифікації: 
+```bash
+aws sts get-caller-identity
+```
+
+<img width="629" height="127" alt="image" src="https://github.com/user-attachments/assets/4c8a0bc9-8eb7-43ac-a3e9-2450fca40114" />
+
+<br>
 
 <br>
 
