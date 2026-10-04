@@ -140,15 +140,21 @@
 
 Я задав ім'я віртуальної машини як "Windows_DimaRudenko", обрав дистрибутив **Windows Microsoft Server 2025 Base** та обрав тип інстансу **`t3.micro`**. Потім створив новий SSH-ключ (Key Pair) із назвою `windows_key.pem`. Налаштував мережу по аналогії як показано у відео. Потім підключився до віртуальної машини, попередньо створивши пароль:
 
-
+<img width="1437" height="311" alt="image" src="https://github.com/user-attachments/assets/02f4f006-e110-4427-b857-8ac5650df520" />
 
 <br>
 
 <span>7. У AWS CLI перегляньте чи є у Вас запущені якісь віртуальні машини? Через Remote Desktop Conection підключіться до Вашої віртуальної машини, подивіться інформацію про систему та змініть назву серверу на наступну.  Перезавантажте віртуальну машину, перевірте чи змінилась назва.</span>
 
+Я змінив назву серверу та перезавантажив ВМ. Зміни були застосовані:
+
+<img width="1920" height="1021" alt="Capture" src="https://github.com/user-attachments/assets/d9a06cce-7ba8-496a-beed-3f264707205c" />
+
 <br>
 
 <span>8. При завершенні роботи з інстансом не забудьте його стан перевести в неактивный, натиснувши “Terminate Instance” в параметрах стану віртуальної машини в Amazon EC2.</span>
+
+<img width="1447" height="284" alt="image" src="https://github.com/user-attachments/assets/9701883e-f031-43f5-b6b5-aafbf9903319" />
 
 ---
 
