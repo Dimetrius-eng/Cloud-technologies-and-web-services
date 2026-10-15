@@ -313,18 +313,19 @@ class Program
 
 --------------------------------------------------------------------------------
 
-**<span>6. У Azure Active Directory → Groups створіть нову групу з назвою readonly. Додайте до неї одного користувача з групи developers. Перегляньте для цього користувача в яких групах він перебуває.</span>**
+**<span>6. У Azure Active Directory → Groups створіть нову групу з назвою readonly. Додайте до неї одного користувача з групи developers. Перегляньте для цього користувача в яких групах він перебуває.</span>**  
+
 1. У підрозділі **Microsoft Entra ID -> Groups** натиснув кнопку **New group**;
 2. Заповнив параметри для другої групи:
    * **Group type:** `Security`;
    * **Group name:** `readonly`;
    * **Group description:** `Read-only access audit group`;
    * **Membership type:** `Assigned`;
-3. У полі **Members** додав одного з учасників групи developers — `Volodymyr Kirichok` (або `Dima Rudenko`) та натиснув **Create**;
-4. Для перевірки структури членства перейшов у розділ **Users**, вибрав користувача `Volodymyr Kirichok` та відкрив у лівому меню вкладку **Groups**;
+3. У полі **Members** додав одного з учасників групи developers — `Dima Rudenko` та натиснув **Create**;
+4. Для перевірки структури членства перейшов у розділ **Users**, вибрав користувача `Dima Rudenko` та відкрив у лівому меню вкладку **Groups**;
 5. У списку груп наочно відображено, що даний користувач є одночасним членом двох створених груп: `developers` та `readonly`.
 
-![Скріншот перебування користувача одночасно у двох групах developers та readonly](screenshot_azure_user_groups_membership.png)
+<img width="1734" height="322" alt="image" src="https://github.com/user-attachments/assets/95938b20-aa34-4eab-a8c3-72138034ebdc" />
 
 --------------------------------------------------------------------------------
 
