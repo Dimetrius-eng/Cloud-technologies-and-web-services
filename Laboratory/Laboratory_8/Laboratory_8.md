@@ -205,14 +205,16 @@ def upload_file_to_gcs():
 * **Перевірте встановлення командою gcloud --version**
 
 Для керування ресурсами GCP через локальний термінал було встановлено офіційний пакет **Google Cloud SDK**:
-1. З офіційного порталу завантажено та виконано інсталятор Google Cloud SDK для Windows (або виконано команду `winget install Google.CloudSDK` у PowerShell);
-2. Після завершення інсталяції у терміналі було виконано перевірочну команду:
+1. Було виконано команду `winget install Google.CloudSDK` у PowerShell;
+3. Після завершення інсталяції у терміналі було виконано перевірочну команду:
 ```bash
 gcloud --version
 ```
 Консоль успішно повернула версію інструменту `Google Cloud SDK` (версії 480+), версії утиліт `bq`, `gsutil`, `gke-gcloud-auth-plugin` та системні компоненти Python:
 
-![Скріншот перевірки встановленої версії Google Cloud SDK за допомогою gcloud --version](screenshot_gcloud_version.png)
+<img width="827" height="226" alt="image" src="https://github.com/user-attachments/assets/8eb60d33-9edc-4eb8-9490-a34a6d1bff62" />
+
+<img width="569" height="164" alt="image" src="https://github.com/user-attachments/assets/93b79e87-e8c0-496c-8042-20a16a2f44c8" />
 
 ---
 
@@ -230,7 +232,9 @@ gcloud auth login
 3. Браузер відобразив повідомлення: *"You are now authenticated with the Google Cloud CLI!"*;
 4. У консолі термінал підтвердив успішний вхід та зафіксував активний обліковий запис. Також за допомогою команди `gcloud config set project <project-id>` було встановлено робочий проєкт за замовчуванням.
 
-![Скріншот успішної авторизації у gcloud CLI через браузер](screenshot_gcloud_login.png)
+<img width="1102" height="440" alt="image" src="https://github.com/user-attachments/assets/c965f049-225d-4b2b-a792-508937fea3ac" />
+
+<img width="1884" height="628" alt="image" src="https://github.com/user-attachments/assets/bff67351-9613-430c-90fe-c82e75564a29" />
 
 ---
 
@@ -244,7 +248,7 @@ gcloud compute instances list
 ```
 Команда надіслала запит до Compute Engine API й повернула порожній результат (*INFO: Listed 0 items*), підтверджуючи відсутність активних екземплярів ВМ у даному проєкті та відсутність нецільового витрачання тестових кредитів 300$ Free Trial.
 
-![Скріншот виконання команди gcloud compute instances list у терміналі](screenshot_gcloud_instances_list.png)
+<img width="636" height="100" alt="image" src="https://github.com/user-attachments/assets/0d009ea7-bcc7-4dee-90b5-0079616eae98" />
 
 ---
 
@@ -380,8 +384,8 @@ Google Cloud Platform надає сотні спеціалізованих пр�
 
 ### Висновки
 
-У ході виконання лабораторної роботи №8 було детально опрацьовано теоретичні та практичні засади знайомства з хмарною екосистемою Google Cloud Platform (GCP). 
+У ході виконання лабораторної роботи було детально опрацьовано теоретичні та практичні засади знайомства з хмарною екосистемою Google Cloud Platform (GCP). 
 Успішно пройдено реєстрацію безкоштовного ознайомчого акаунту Google Cloud Free Trial із отриманням стартового балансу $300 кредитів на 90 днів та доступу до сервісів Always Free Tier. 
 Задля дотримання принципів FinOps у розділі Billing -> Budgets & alerts було сконфігуровано бюджет нульових витрат (**Zero Spend Budget**) з порогами сповіщень при 50%, 80% та 100% від суми для своечасного інформування на email. 
-Налаштовано двофакторну автентифікацію (**2-Step Verification / 2FA**) для акаунту Google через додаток Google Authenticator. У службі авторизації Cloud IAM відпрацьовано адміністрування користувачів та груп: створено групу розробників `developers` для трьох учасників студентської команди (`Dima Rudenko`, `Dima Zozulia`, `Volodymyr Kirichok`) та групу аудиту `readonly`, перевірено множинне членство користувача в групах для застосування політик доступу. 
+Налаштовано двофакторну автентифікацію (**2-Step Verification / 2FA**) для акаунту Google через додаток Google Authenticator. У службі авторизації Cloud IAM відпрацьовано адміністрування користувачів. Створено трьох учасників студентської команди (`Dima Rudenko`, `Dima Zozulia`, `Volodymyr Kirichok`) та надано відповідні ролі. 
 Встановлено та верифіковано інструмент командного рядка Google Cloud SDK (gcloud CLI), виконано інтерактивну авторизацію `gcloud auth login` через веб-браузер, проведено перевірку наявності віртуальних машин за допомогою команди `gcloud compute instances list` та складено українськомовну довідку з базового синтаксису управління хмарою. Також глибоко вивчено архітектуру сервісів Compute Engine, App Engine (версіонування та Traffic Splitting), Cloud Storage (класи Standard, Nearline, Coldline, Archive), Serverless-платформи (Cloud Functions, Cloud Run) та механізми автентифікації/авторизації через Service Accounts і IAM Roles.
