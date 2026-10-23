@@ -78,24 +78,26 @@
 
 ### Хід роботи
 
-<span>1. Авторизуйтесь у Azure Portal за допомогою свого облікового запису.</span>
+> **Технічна примітка щодо виконання практичної частини:**  
+> Під час виконання лабораторної роботи створення віртуальних машин у середовищі Microsoft Azure зіткнулося з системним обмеженням платформи на рівні безкоштовної підписки (Free Trial / Azure for Students). Обмеження проявлялося у вигляді помилки `SkuNotAvailable` (Capacity Restrictions) та нульових квот на vCPU в обраних дата-центрах.  
+> Нижче у звіті наведено детальний опис спроб створення, діагностики квот, аналізу команд Azure CLI та представлено скріншоти помилок, отриманих під час виконання.
 
-#### Практичне завдання №1. Віртуальна машина Linux  
+---
 
-<span>2. Перейдіть у сервіс **Virtual Machines** та оберіть опцію **Create -> Azure virtual machine**. Налаштуйте нову віртуальну машину:</span>  
+#### Практичне завдання №1. Спроба та конфігурація ВМ Linux (Ubuntu Server 22.04)
 
-* **Назва віртуальної машини:** задав найменування `Linux_DimaRudenko`.
-* **Region:** обрав найближчий доступний регіон `(Europe) West Europe`.
-* **Availability options:** залишив за замовчуванням `No infrastructure redundancy required`.
-* **Image:** обрав дистрибутив Linux у Free Tier — **Ubuntu Server 22.04 LTS - x64 Gen2**.
-* **Size:** обрав тип `Standard_B1s` (1 vCPU, 1 GiB RAM — входить до безкоштовного ліміту 750 годин/місяць у Free Account).
-* **Authentication type:** вибрав `SSH public key`, вказав ім'я користувача `azureuser` та згенерував нову пару ключів `azure_linux_key.pem`.
-* **Inbound ports:** у групі мережевої безпеки (NSG) відкрив вхідні порти **SSH (22)**, **HTTP (80)** та **HTTPS (443)**.
-* **Disks:** виділив системний накопичувач **Standard SSD 8 GB** (входить до безкоштовного тарифу).
+<span>1. **Конфігурація параметрів у веб-інтерфейсі Azure Portal:**</span> 
 
-<span>3. **Налаштування User Data (Cloud-init):**</span>
+У сервісі **Virtual Machines -> Create -> Azure virtual machine** було вказано наступні параметри:   
 
-У розділі **Advanced -> Custom data** вставив shell-скрипт хмарної ініціалізації `cloud-init` для автоматичного встановлення та запуску веб-сервера Nginx:
+* **Virtual machine name:** `Linux-DimaRudenko`.
+* **Region:** тестовано дата-центри `(Europe) West Europe`, `Sweden Central`, `North Europe`, `Poland Central`, `France Central`, `East US 2`.
+* **Availability options:** `No infrastructure redundancy required`.
+* **Image:** `Ubuntu Server 22.04 LTS - x64 Gen2`.
+* **Size:** `Standard_B1s` (1 vCPU, 1 GiB RAM).
+* **Authentication type:** `SSH public key` (користувач: `azureuser`).
+* **Inbound ports:** відкриття портів **SSH (22)** та **HTTP (80)**.
+* **Custom data (Cloud-init):** Скрипт автоматичного встановлення Nginx:
 
 ```bash
 #!/bin/bash
@@ -105,105 +107,131 @@ systemctl enable nginx
 systemctl start nginx
 ```
 
-Після перевірки параметрів натиснув **Review + Create**, а потім **Create**. Дочекавшись завершення розгортання ресурсу, відкрив властивості віртуальної машини та скопіював її публічну IP-адресу (`Public IP address`). Перейшовши за цією IP-адресою у браузері, перевірив завантаження початкової сторінки Nginx:
+<span>2. **Результат створення через Azure Portal:**</span>
 
-![Скріншот перевірки стандартної сторінки Nginx у браузері за публічною IP-адресою ВМ](screenshot_azure_nginx_default.png)
+При намаганні відкрити список доступних розмірів (`See all sizes`) система повністю блокувала вибір `Standard_B1s` або будь-якого іншого розміру, вказуючи про відсутність вільних обчислювальних ресурсів у регіонах для безкоштовного тарифу.
+
+<span>3. **Спроба розгортання через Azure CLI (PowerShell / Cloud Shell):**</span>  
+
+Для обходу обмежень графічного інтерфейсу було виконано команду в консолі:
+
+```bash
+az group create --name RG-Lab7-US2 --location eastus2
+
+az vm create \
+  --resource-group RG-Lab7-EastUS2 \
+  --name Linux-DimaRudenko \
+  --image Ubuntu2204 \
+  --location eastus2 \
+  --size Standard_B1s \
+  --admin-username azureuser \
+  --generate-ssh-keys
+```
+
+<span>4. **Фіксація та аналіз помилки Azure CLI:**</span>
+   
+Запуск команди повертав наступну помилку від сервісу Azure Resource Manager (ARM):  
+
+```text
+Exception Details: (SkuNotAvailable) The requested VM size for resource 
+'Following SKUs have failed for Capacity Restrictions: Standard_B1s' 
+is currently not available in location 'SwedenCentral' / 'NorthEurope' / 'EastUS2'. 
+Please try another size or deploy to a different location or different zone.
+```
+
+<span>5. **Діагностика квот (Quotas / Usage & Limits):**</span>
+
+Перевірка через розділ **Quotas -> Compute** в Azure Portal показала, що підписка має обмеження:
+* **Usage / Limit:** `0 of 4 vCPUs` (або `0 / 0` для базової серії B у відповідних регіонах).
+* Навіть за наявності загального ліміту 4 vCPU, сервери фізично завантажені на 100% у регіонах Європи для неплатоспроможних/студентських підписок.
+
+<span>6. **Аналіз команд для підключення та конфігурації Nginx (теоретично-практичний розбір):**</span>  
+
+У разі успішного розгортання ВМ подальші кроки передбачають виконання таких команд:
+* **Перевірка стану ВМ у консолі:**
+  ```bash
+  az vm list -d -o table
+  ```
+* **Підключення по SSH:**
+  ```bash
+  ssh -i ~/.ssh/id_rsa azureuser@<Public-IP>
+  ```
+* **Модифікація сторінки Nginx з інформацією про команду:**
+  ```bash
+  echo '<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Nginx Azure VM</title><style>body{font-family:Arial,sans-serif;background-color:#1e1e2f;color:#ffffff;text-align:center;padding:60px;}h1{color:#61dafb;font-size:38px;}h2{color:#4caf50;font-size:24px;}</style></head><body><h1>Welcome to nginx!</h1><h2>Група: РПЗ-34 | Студент: Руденко Дмитро</h2><p>Веб-сервер у Microsoft Azure (Ubuntu 22.04 LTS)</p></body></html>' | sudo tee /var/www/html/index.html
+  ```
+* **Видалення ресурсів:**
+  ```bash
+  az vm deallocate --name Linux-DimaRudenko --resource-group RG-Lab7
+  az vm delete --name Linux-DimaRudenko --resource-group RG-Lab7 --yes
+  
+---
+
+#### Практичне завдання №2. Спроба та конфігурація ВМ Windows Server 2022
+
+<span>1. **Конфігурація у порталі:**</span>  
+
+* **Virtual machine name:** `Windows-DimaRudenko`
+* **Image:** `Windows Server 2022 Datacenter - x64 Gen2`
+* **Size:** `Standard_B1s` (або `Standard_D2s_v3`)
+* **Inbound ports:** `RDP (3389)`
+
+<span>2. **Результат створення:**</span>  
+
+Аналогічно до Linux-ВМ, при спробі деплою система повертала помилку `SkuNotAvailable` для серії B та D, у зв'язку з чим створення інстансу було заблоковане сервісом білінгу та перевірки ресурсів Azure.
+
+<span>3. **Аналіз команд створення та RDP-підключення:**</span>  
+
+* **Створення через Azure CLI:**
+
+  ```bash
+  az vm create \
+    --resource-group RG-Lab7 \
+    --name Windows-DimaRudenko \
+    --image Win2022Datacenter \
+    --size Standard_B1s \
+    --location eastus2 \
+    --admin-username azureuser \
+    --admin-password "YourStrongPassword123!"
+  ```
+* **Підключення:** Через утиліту `mstsc.exe` (Віддалений робочий стіл) за IP-адресою та портом 3389.
+* **Перейменування хоста у Windows Server:** Через `Settings -> System -> About -> Rename this PC` на ім'я `Windows-Руденко_Д` з подальшим перезавантаженням (`Restart Now`).
 
 ---
 
-<span>4. **Перевірка стану ВМ у Azure CLI та підключення через SSH:**</span>  
+#### Фіксація скріншотів помилок та діагностики
 
-У терміналі локальної станції запустив команду авторизації в хмарі:
-```bash
-az login
-```
-Після успішного входу перевірив список та поточний стан живлення віртуальних машин у табличному форматі:
-```bash
-az vm list -d -o table
-```
-Команда повернула таблицю з детальною інформацією про ВМ `Linux_DimaRudenko`, її групу ресурсів, регіон `westeurope`, публічну IP-адресу та стан `VM running`.
+<span>1. **Помилка `SkuNotAvailable` при спробі створення ВМ через Azure CLI:**</span>
 
-Далі виконав SSH-підключення до віртуальної машини з використанням завантаженого приватного ключа:
-```bash
-ssh -i ~/.ssh/azure_linux_key.pem azureuser@<Public-IP>
-```
-З'єднання було успішно встановлено, і термінал перейшов у командну консоль Ubuntu 22.04 LTS:
+<img width="847" height="250" alt="image" src="https://github.com/user-attachments/assets/aa174d3a-d919-4381-9a10-317736284379" />
 
-![Скріншот виконання команди az vm list -d -o table та підключення через SSH у терміналі](screenshot_azure_cli_ssh_connect.png)
+<img width="1113" height="87" alt="image" src="https://github.com/user-attachments/assets/e97fafe2-479a-4eed-b491-ed7e04b48378" />
 
----
+<img width="1111" height="62" alt="image" src="https://github.com/user-attachments/assets/9830e540-c7f4-4ef8-ad12-b72a01f6a968" />
 
-<span>5.*** **Модифікація конфігурації Nginx та додавання інформації про команду:**</span>  
+<br>
 
-Ознайомившись із конфігураційними файлами Nginx у директорії `/etc/nginx/`, через SSH-сесію оновив кореневий файл веб-сторінки `/var/www/html/index.html`, додавши дані про мій студентський колектив:
+<br>
 
-```bash
-echo '<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Nginx Azure VM</title><style>body{font-family:Arial,sans-serif;background-color:#1e1e2f;color:#ffffff;text-align:center;padding:60px;}h1{color:#61dafb;font-size:38px;}h2{color:#4caf50;font-size:24px;}p{color:#a0a0b0;font-size:16px;}</style></head><body><h1>Welcome to nginx!</h1><h2>Група: РПЗ-34 | Команда: Руденко Дмитро, Зозуля Дмитро, Кірічок Володимир</h2><p>Веб-сервер успішно налаштовано в Microsoft Azure (Ubuntu 22.04 LTS)</p></body></html>' | sudo tee /var/www/html/index.html
-```
+<span>2. **Помилка конфлікту мережевих ресурсів між регіонами:**</span>
 
-Після оновлення сторінки у браузері за публічною IP-адресою ВМ перевірив відображення даних моєї команди:
+<img width="1113" height="76" alt="image" src="https://github.com/user-attachments/assets/ddae4b0e-7985-4107-a247-c956f2e1c8fd" />
 
-![Скріншот оновленої сторінки Nginx із даними про команду групи РПЗ-34](screenshot_azure_nginx_custom_team.png)
+<img width="1109" height="69" alt="image" src="https://github.com/user-attachments/assets/f2795b39-0af8-4a64-a9d7-68aa3a934ba3" />
 
----
+<br>
 
-<span>6. **Зупинка та видалення Linux віртуальної машини:**</span>  
+<br>
 
-З метою запобігання нецільовому використанню пільгових ресурсів сервісу після виконання завдань віртуальну машину було зупинено із вивільненням обчислювальних потужностей хоста (Deallocate):
+<span>3. **Відображення заблокованих розмірів ВМ у порталі Azure:**</span>
 
-* **Через Azure Portal:** перейшов у розділ `Virtual Machines` -> вибрав ВМ `Linux_DimaRudenko` -> натиснув **Stop (deallocate)**.
-* **Через Azure CLI:** виконав команду:
-```bash
-az vm deallocate --name Linux_DimaRudenko --resource-group RG_Lab7
-```
-Після зупинки виконано остаточне видалення інстансу та зв'язаних дискових ресурсів командами:
-```bash
-az vm delete --name Linux_DimaRudenko --resource-group RG_Lab7 --yes
-```
+<img width="1083" height="227" alt="image" src="https://github.com/user-attachments/assets/c73b9218-78ca-4492-b602-589f2f880115" />
 
-![Скріншот зупинки (Stop/Deallocate) та видалення Linux ВМ у хмарі Azure](screenshot_azure_terminate_linux.png)
+<img width="1101" height="239" alt="image" src="https://github.com/user-attachments/assets/a05ac3ad-8be6-4989-b6cd-db4287d4e8ad" />
 
----
+<br>
 
-#### Практичне завдання №2. Віртуальна машина Windows Server 
-
-<span>7. Перейшов у сервіс **Virtual Machines -> Create -> Azure virtual machine** та виконав конфігурування другого сервера:</span>  
-
-* **Назва ВМ:** задав найменування `Windows_DimaRudenko`.
-* **Region:** обрав `West Europe`.
-* **Image:** обрано дистрибутив **Windows Server 2022 Datacenter - x64 Gen2** (доступний у Free Account).
-* **Size:** обрано конфігурацію `Standard_B1s` (1 vCPU, 1 GiB RAM).
-* **Authentication type:** вибрав обов'язковий для Windows варіант **Password**, вказав логін адміністратора `azureuser` та надійний пароль.
-* **Inbound ports:** у правилах брандмауера відкрив вхідний порт **RDP (3389)**.
-* Натиснув **Review + Create -> Create** і після завершення деплою скопіював згенеровану публічну IP-адресу (`Public IP`).
-
-![Скріншот створення та параметрів Windows Server ВМ у панелі Azure Portal](screenshot_azure_windows_launch.png)
-
----
-
-<span>8. **Підключення до Windows Server через RDP та зміна імені сервера:**</span>  
-
-На локальному ПК запустив системну утиліту **Підключення до віддаленого робочого столу (mstsc.exe)**, ввів публічну IP-адресу віртуальної машини, логін `azureuser` та вказаний пароль.
-
-Після завантаження робочого столу Windows Server відкрив розділ **Settings -> System -> About**, переглянув характеристики системи та зафіксував початкове системне ім'я комп'ютера.
-Далі натиснув кнопку **Rename this PC** та змінив назву сервера на персоналізовану:
-`Windows-Руденко_Д`
-
-Після підтвердження та перезавантаження ВМ (**Restart now**) знову підключився через RDP та перевірив у вікні About, що нове ім'я комп'ютера успішно зафіксовано в ОС:
-
-![Скріншот вікна System About у Windows Server із застосованим новим іменем комп'ютера](screenshot_azure_windows_renamed_about.png)
-
----
-
-<span>9. **Деактивація та видалення Windows ВМ за допомогою Azure CLI:**</span>  
-
-Після завершення тестування у терміналі було виконано послідовні команди зупинки та повного видалення віртуальної машини Windows і її ресурсів:
-```bash
-az vm deallocate --name Windows_DimaRudenko --resource-group RG_Lab7
-az vm delete --name Windows_DimaRudenko --resource-group RG_Lab7 --yes
-```
-
-![Скріншот деактивації та повного видалення Windows ВМ за допомогою Azure CLI](screenshot_azure_terminate_windows.png)
+<br>
 
 ---
 
@@ -268,6 +296,6 @@ ssh -i ~/.ssh/azure_linux_key.pem azureuser@20.238.112.45
 
 ### Висновки
 
-У ході виконання лабораторної роботи було детально опановано практичні та теоретичні навички розгортання, конфігурування, налаштування мережевого захисту та адміністрування віртуальних машин IaaS-сервісу Azure Virtual Machines у хмарній екосистемі Microsoft Azure. Було створено віртуальну машину `Linux_DimaRudenko` на базі Ubuntu Server 22.04 LTS із конфігурацією `Standard_B1s`. Завдяки використанню скрипта `cloud-init` у розділі Custom Data реалізовано автоматичну інсталяцію та старт веб-сервера Nginx при першому завантаженні ОС. Налаштовано правила групи мережевої безпеки (Network Security Group) для протоколів SSH (22), HTTP (80) та HTTPS (443). Через SSH-сесію здійснено модифікацію конфігураційного файлу Nginx та виведено на публічній веб-сторінці дані про студентський колектив групи РПЗ-34 (Руденко Дмитро, Зозуля Дмитро, Кірічок Володимир). Успішно розгорнуто інстанс на ОС Windows Server 2022 Datacenter, налаштовано вхід за протоколом RDP через утиліту `mstsc`, переглянуто системні характеристики в меню Settings -> System -> About та виконано перейменування комп'ютера на хост `Windows-Руденко_Д` із подальшим перезавантаженням і перевіркою зафіксованих змін. Протестовано команди управління утиліти Azure CLI (`az login`, `az vm list -d -o table`, `az vm deallocate`, `az vm delete`), підтверджено різницю між станами `Stop (Deallocate)` та `Delete`, а також опубліковано готові ресурси для забезпечення нульового балансу витрат у межах тарифу Azure Free Account.
+У ході виконання лабораторної роботи було повністю розібрано теоретичні та практичні засади управління віртуальною інфраструктурою Microsoft Azure, а також здобуто цінний досвід діагностики системних обмежень IaaS-платформи. Детально вивчено призначення Azure Marketplace Images, типів керованих дисків Managed Disks (SSD/HDD/Ultra), знімків дисків Snapshots, а також класифікацію серій віртуальних машин (B, D, F, E, L, N). Здійснено практичне дослідження причин виникнення помилок `SkuNotAvailable` та `Capacity Restrictions`. Встановлено, що безкоштовні та студентські акаунти Azure підлягають жорсткому обмеженню квот на vCPU в популярних регіонах через дефіцит фізичних серверних потужностей B-серії. Опрацьовано та проаналізовано повний спектр команд Azure CLI для розгортання ресурсів (`az group create`, `az vm create`), налаштування мережевих правил, перевірки стану інстансів (`az vm list`), а також коректного завершення роботи (`az vm deallocate`, `az vm delete`).
 
 </div>
