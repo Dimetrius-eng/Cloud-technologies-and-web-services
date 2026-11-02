@@ -77,7 +77,7 @@ Snapshots у Google Cloud являють собою інкрементні то�
 
 ##### Практичне завдання №1. Віртуальна машина Linux
 <span>2. Перейшов у сервіс Compute Engine -> VM instances та обрав Create Instance для налаштування Linux віртуальної машини:</span>
-* **Назва віртуальної машини:** задав найменування `Linux_DimaRudenko` (формат для командної роботи: `Linux_Руденко_Зозуля_Кірічок`).
+* **Назва віртуальної машини:** задав найменування `linuxdimarudenko`.
 * **Region / Zone:** обрав регіон `us-central1 (Iowa)` та зону `us-central1-a` (зони США підтримують пільговий тариф Free Tier).
 * **Machine type:** обрав конфігурацію `e2-micro` (2 vCPU, 1 ГБ RAM — відповідає безкоштовній квоті GCP Free Tier).
 * **Boot disk:** натиснув *Change* та вибрав дистрибутив **Ubuntu 22.04 LTS**, тип диска **Standard Persistent Disk 10 GB**.
@@ -95,7 +95,7 @@ systemctl start nginx
 
 <span>4. Натиснув Create, дочекався запуску ВМ, скопіював її зовнішній IP (External IP) та відкрив його у браузері, підтвердивши завантаження початкової сторінки Nginx ("Welcome to nginx!"):</span>
 
-![Скріншот завантаження стандартної сторінки Nginx у браузері за External IP адресою ВМ](screenshot_gcp_nginx_default.png)
+<img width="1621" height="332" alt="image" src="https://github.com/user-attachments/assets/d3d5367b-50ba-4a76-a8cb-e8d641db17c5" />
 
 ---
 
@@ -106,11 +106,13 @@ gcloud compute instances list
 ```
 Далі запустив команду авторизованого підключення до Linux ВМ за допомогою ключів SSH:
 ```bash
-gcloud compute ssh Linux_DimaRudenko --zone=us-central1-a
+gcloud compute ssh linuxdimarudenko --zone=us-central1-a
 ```
 З'єднання було успішно встановлено без необхідності ручного створення ключів завдяки автоматичній інжект-системі GCP Metadata SSH Keys:
 
-![Скріншот виконання команди gcloud compute instances list та успішного підключення через SSH у Cloud Shell](screenshot_gcp_cli_ssh_connect.png)
+<img width="688" height="219" alt="image" src="https://github.com/user-attachments/assets/66b5c207-3cb4-401e-b89b-f521f678bc48" />
+
+<img width="1008" height="518" alt="image" src="https://github.com/user-attachments/assets/f55356cc-b026-461c-aae4-5321f2a838b5" />
 
 ---
 
@@ -123,7 +125,7 @@ echo '<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Nginx GC
 
 Після оновлення сторінки у браузері за External IP адресою перевірив відображення даних нашої команди:
 
-![Скріншот оновленої сторінки Nginx у браузері з інформацією про студентську команду РПЗ-34](screenshot_gcp_nginx_custom_team.png)
+<img width="1621" height="395" alt="image" src="https://github.com/user-attachments/assets/3d3664b4-9d4e-4266-a8f3-3a8c62bb14d6" />
 
 ---
 
@@ -131,14 +133,14 @@ echo '<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Nginx GC
 З метою дотримання лімітів білінгу після завершення тестування виконав зупинку та видалення ресурсів:
 * **Зупинка через Cloud Shell:**
 ```bash
-gcloud compute instances stop Linux_DimaRudenko --zone=us-central1-a
+gcloud compute instances stop linuxdimarudenko --zone=us-central1-a
 ```
 * **Остаточне видалення через Cloud Shell:**
 ```bash
-gcloud compute instances delete Linux_DimaRudenko --zone=us-central1-a --quiet
+gcloud compute instances delete linuxdimarudenko --zone=us-central1-a --quiet
 ```
 
-![Скріншот зупинки та видалення Linux ВМ у Cloud Shell](screenshot_gcp_terminate_linux.png)
+<img width="1093" height="149" alt="image" src="https://github.com/user-attachments/assets/f0a97345-6a0a-49e3-8e9b-139bbe8c3bc0" />
 
 ---
 
