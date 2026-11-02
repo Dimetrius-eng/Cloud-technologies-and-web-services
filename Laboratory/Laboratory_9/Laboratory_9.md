@@ -146,7 +146,7 @@ gcloud compute instances delete linuxdimarudenko --zone=us-central1-a --quiet
 
 ##### Практичне завдання №2. Віртуальна машина Windows Server
 <span>8. Перейшов у Compute Engine -> VM instances -> Create Instance та налаштував другий сервер:</span>
-* **Назва ВМ:** `Windows_DimaRudenko` (формат для командної роботи: `Windows_Руденко_Зозуля_Кірічок`).
+* **Назва ВМ:** `windowsdimarudenko`.
 * **Region / Zone:** `us-central1 (Iowa)` / `us-central1-a`.
 * **Machine type:** `e2-medium` (2 vCPU, 4 ГБ RAM — необхідний мінімум для завантаження графічного інтерфейсу Windows Server).
 * **Boot disk:** обрав **Windows Server 2022 Datacenter**, тип **Standard Persistent Disk 50 GB**.
