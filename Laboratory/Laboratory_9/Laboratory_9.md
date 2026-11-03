@@ -144,39 +144,28 @@ gcloud compute instances delete linuxdimarudenko --zone=us-central1-a --quiet
 
 ---
 
-##### Практичне завдання №2. Віртуальна машина Windows Server
-<span>8. Перейшов у Compute Engine -> VM instances -> Create Instance та налаштував другий сервер:</span>
-* **Назва ВМ:** `windowsdimarudenko`.
-* **Region / Zone:** `us-central1 (Iowa)` / `us-central1-a`.
-* **Machine type:** `e2-medium` (2 vCPU, 4 ГБ RAM — необхідний мінімум для завантаження графічного інтерфейсу Windows Server).
-* **Boot disk:** обрав **Windows Server 2022 Datacenter**, тип **Standard Persistent Disk 50 GB**.
-* **Firewall:** у налаштуваннях мережі створив дозволяюче правило для вхідного порту **RDP (3389)**.
+##### Практичне завдання №2. Віртуальна машина Windows Server (Аналіз обмежень GCP Free Trial)
+<span>8. Спроба створення та налаштування Windows Server віртуальної машини:</span>
+Під час спроби розгортання віртуальної машини на базі Windows Server 2022 Datacenter у Compute Engine за допомогою веб-консолі платформа Google Cloud Platform відхилила створення інстансу з наступним офіційним повідомленням про обмеження тарифу Free Trial:
 
-<span>9. Отримання облікових даних та підключення через RDP:</span>
-У консолі GCP відкрив властивості створення ВМ, натиснув **Set Windows password**, вказав користувача `azureuser` та отрималю згенерований пароль. На локальному ПК відкрив утиліту `mstsc.exe`, ввів External IP машини, логін та пароль і підключився до віддаленого робочого столу:
-
-![Скріншот отримання пароля Windows та підключення через RDP](screenshot_gcp_windows_rdp.png)
+<img width="1019" height="419" alt="image" src="https://github.com/user-attachments/assets/b4b33f93-373f-4cb9-8059-04593e6599fe" />
 
 ---
 
-<span>10. Зміна імені комп'ютера у Windows Server:</span>
-У сесії RDP відкрив **Settings -> System -> About**, переглянув характеристики системи, натиснув **Rename this PC** та змінив ім'я на:
-`WSERVER-Руденко_Д`
+<span>9. Аналіз причин обмеження та механізм підключення через RDP:</span>
+Дана помилка виникає через сувору політику захисту від зловживань та особливості ліцензування комерційного програмного забезпечення Microsoft у хмарі GCP. Провайдер Google Cloud блокує генерацію інстансів Windows Server для ознайомчих акаунтів Free Trial ($300 trial credits) до моменту оновлення білінг-профілю (Upgrade to paid billing account).
 
-Після перезавантаження сервера знову підключився через RDP і підтвердив збереження нового імені комп'ютера:
-
-![Скріншот вікна System About у Windows Server із застосованим новим іменем WSERVER-Руденко_Д](screenshot_gcp_windows_renamed.png)
-
----
-
-<span>11. Завершення роботи та видалення Windows ВМ:</span>
-У терміналі Cloud Shell виконав команди зупинки та повного видалення віртуального сервера Windows:
+У разі активації платного акаунта або стандартної інфраструктури підключення та адміністрування Windows Server здійснюється за наступним алгоритмом:
+1. Генерація пароля адміністратора через утиліти GCP:
 ```bash
-gcloud compute instances stop Windows_DimaRudenko --zone=us-central1-a
-gcloud compute instances delete Windows_DimaRudenko --zone=us-central1-a --quiet
+gcloud compute reset-windows-password windows-dimarudenko --zone=us-central1-a --user=azureuser
 ```
-
-![Скріншот деактивації та видалення Windows ВМ через gcloud CLI](screenshot_gcp_terminate_windows.png)
+2. Підключення через системну утиліту `mstsc.exe` (Remote Desktop Connection) за External IP та створеним паролем.
+3. Перейменування комп'ютера у системних налаштуваннях `Settings -> System -> About` на `WSERVER-Руденко_Д`.
+4. Видалення ресурсів після завершення роботи:
+```bash
+gcloud compute instances delete windows-dimarudenko --zone=us-central1-a --quiet
+```
 
 ---
 
