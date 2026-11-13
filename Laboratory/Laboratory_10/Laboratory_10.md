@@ -148,7 +148,7 @@ docker ps -a
 
 <span>8. Відкрийте веббраузер і перейдіть за адресою http://localhost або http://IP-адреса-системи.</span>  
 
-Під час запуску контейнера з прокиданням порту (`docker run -d -p 80:80 --name my-ubuntu-container ubuntu ...` або перенаправленням порту хоста) здійснено перехід у браузері за адресою `http://localhost` та перевірено відображення стандартної вітальної сторінки Apache2 Ubuntu Default Page.
+Під час запуску контейнера з прокиданням порту (`docker run -d -p 80:80 --name my-ubuntu-container ubuntu ...`) здійснено перехід у браузері за адресою `http://localhost` та перевірено відображення стандартної вітальної сторінки Apache2 Ubuntu Default Page.
 
 <img width="1456" height="414" alt="image" src="https://github.com/user-attachments/assets/11fc9da5-6b96-4b2e-9451-e77821190786" />
 
