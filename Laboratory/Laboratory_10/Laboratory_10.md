@@ -88,7 +88,7 @@ Docker Engine завантажив необхідні маніфести та ш
 ```bash
 docker run -it --name my-ubuntu-container ubuntu /bin/bash
 ```
-Прапорці `-i` (interactive) та `-t` (tty) забезпечили виділення псевдотерміналу, і командний рядок змінився на внутрішній root-промпт контейнера (`root@a1b2c3d4e5f6:/#`).
+Прапорці `-i` (interactive) та `-t` (tty) забезпечили виділення псевдотерміналу, і командний рядок змінився на внутрішній root-промпт контейнера (`root@cd5dd05d0e6a:/#`).
 
 <img width="774" height="54" alt="image" src="https://github.com/user-attachments/assets/0d701361-9e97-490d-9f74-8dd5a8245c55" />
 
